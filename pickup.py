@@ -3,6 +3,7 @@
 import time
 
 from robomaster import robot
+from robot_lock import acquire_robot_lock
 
 
 def finish(action, label):
@@ -69,4 +70,5 @@ def pickup():
 
 
 if __name__ == "__main__":
-    pickup()
+    with acquire_robot_lock():
+        pickup()

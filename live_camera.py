@@ -4,6 +4,9 @@ from pathlib import Path
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import cv2
 from robomaster import robot, camera
+from robot_lock import acquire_robot_lock
+
+_controller_lock = acquire_robot_lock()
 
 RUNTIME = Path.home() / '.cache' / 'robopi-live'
 RUNTIME.mkdir(parents=True, exist_ok=True)

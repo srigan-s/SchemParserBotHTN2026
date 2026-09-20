@@ -13,6 +13,7 @@ from pathlib import Path
 
 from robomaster import robot, camera
 from pickup import finish, stop
+from robot_lock import acquire_robot_lock
 from tag_alignment import TagAligner
 
 AUDIO_DIR = Path(__file__).resolve().parent / "audio"
@@ -141,6 +142,7 @@ def run():
 
 if __name__ == "__main__":
     try:
-        run()
+        with acquire_robot_lock():
+            run()
     except KeyboardInterrupt:
         print("Interrupted; stop commands sent.")

@@ -173,7 +173,7 @@ The audio now comes from `capacitors (2).wav`, `integrated_circuits (1).wav`, an
 Upload all dependencies from the Mac:
 
 ```bash
-scp -r pickup.py four_trips.py tag_alignment.py audio USER@PI_IP:~/schematic-robot/
+scp -r pickup.py four_trips.py tag_alignment.py robot_lock.py terminal_controller.py audio USER@PI_IP:~/schematic-robot/
 ```
 
 Stop the separate `robopi-live.service` before running; this script owns the
@@ -187,3 +187,31 @@ python tests/check_tag_alignment.py
 ```
 
 These checks use a mock robot and do not move hardware or play audio.
+
+## Terminal manual controller
+
+Stop the delivery script with Ctrl+C first. Run in an interactive Pi SSH terminal:
+
+```bash
+systemctl --user stop robopi-live.service
+cd ~/schematic-robot
+~/robomaster-env/bin/python terminal_controller.py
+```
+
+No Enter is needed. W/S or up/down arrows move forward/back; A/D or left/right
+arrows strafe. J/L turn left/right. Each movement key commands a 0.2 second nudge
+at 0.25 m/s initially; +/- adjusts speed from 0.1 to 0.6 m/s. Repeated keys repeat
+nudges. I/K move the arm up/down 1 cm; U/O extend/retract it 1 cm. V opens the claw,
+C closes it, and G closes at power 40 for 1.5 seconds then raises the arm 5 cm.
+G does not move the chassis or use tag tracking; position the claw first.
+
+Space/X stops the wheels, pauses the claw and cancels a pending grab/lift stage.
+An arm movement already dispatched may still finish: the SDK has no public arm
+stop command. Q or Ctrl+C exits with wheel-stop/claw-pause cleanup. Movement
+nudges are timed manual commands; delivery action waits remain without deadlines.
+This is manual control, not a hardware emergency stop. Lost power/network can
+prevent software stop commands from reaching the robot.
+
+The controller, delivery, pickup and live-camera scripts share `robot_lock.py`
+to prevent concurrent SDK clients. Upload that helper with the scripts. Older
+running versions must still be stopped before launching this controller.
