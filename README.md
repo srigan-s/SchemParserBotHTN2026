@@ -75,8 +75,8 @@ Start at the human's delivery line facing the boxes, with the first holder
 60 cm ahead of the claw. Arrange subsequent holders in parallel lanes 25 cm
 apart to the robot's right when facing the boxes.
 
-Each cycle tracks the first 45 cm in steps of up to 10 cm, then advances the
-final 15 cm without vision at a requested 0.7 m/s, grips and lifts 30 mm,
+Each cycle tracks the first 48 cm in steps of up to 10 cm, then advances the
+final 12 cm without vision at a requested 0.7 m/s, grips and lifts 30 mm,
 reverses exactly 60 cm, turns 180 degrees, and raises the claw a further 50 mm (5 cm) from its carrying position for
 handoff. Follow the prompts to support and remove the box. The arm then lowers
 to y=0. After cycles 1–2 the robot shifts 25 cm toward the starting right and
@@ -148,10 +148,10 @@ Keep `audio/` beside `four_trips.py` when copying to the Pi.
 
 `tag_alignment.py` uses the robot camera and OpenCV ArUco AprilTag support. Only
 the expected ID is accepted. It ignores other IDs in the image and requires three centred frames before each
-tracked 10 cm forward step. The first 45 cm are tracked; once 45 cm has been
-commanded, it drives the final 15 cm and grips without another camera check.
-The last visual check occurs before the step from 40 to 45 cm, since the tag
-may already be hidden at the 45 cm boundary. It shifts sideways 3 cm at a time
+tracked 10 cm forward step. The first 48 cm are tracked; once 48 cm has been
+commanded, it drives the final 12 cm and grips without another camera check.
+The last visual check occurs before the step from 40 to 48 cm, since the tag
+may already be hidden at the 48 cm boundary. It shifts sideways 3 cm at a time
 using the SDK's minimum position speed of 0.5 m/s. If the tag is missing or
 ambiguous it stays stopped and prompts for visibility; Ctrl+C exits. After three corrections without useful improvement, or ten corrections, it
 pauses for manual adjustment instead of raising a convergence error. At this
@@ -159,7 +159,7 @@ prompt or a missing-tag prompt: `r` shifts right 5 cm, `l` shifts left 5 cm,
 Enter retries the camera, and `q` aborts. Right is body-right while facing the
 boxes. Both automatic and manual offsets are recorded for the return leg. Camera waits, like operation waits, have no script deadline.
 
-Place each tag at the holder's centre and keep it visible until the last 15 cm.
+Place each tag at the holder's centre and keep it visible until the last 12 cm.
 `TARGET_X_FRACTION=0.5` assumes the claw's grasp axis aligns with image centre;
 this must be verified on the physical robot. This controls horizontal image
 alignment only, not tag range, holder height, obstacle avoidance, or grasp success.

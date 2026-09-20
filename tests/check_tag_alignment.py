@@ -81,16 +81,19 @@ assert tracker.observe(6)<-.3
 assert abs(tracker.observe(0))<.01
 assert tracker.observe(2)>.3
 assert tracker.observe(99) is None
-# Once 45 cm has been travelled, the camera must not be consulted again.
+# Once 48 cm has been travelled, the camera must not be consulted again.
 progress=[0.0]
 def drive_last(ep, distance=0, **kwargs):progress[0]+=distance
 def see_selected(tag):
  assert tag==6
- assert progress[0]<.45-1e-8, 'Unexpected vision requirement inside last 15 cm'
+ assert progress[0]<.48-1e-8, 'Unexpected vision requirement inside last 12 cm'
  return 0
 tracker=TagAligner(ep,drive_last)
 with patch.object(tracker,'observe',side_effect=see_selected) as observed,patch('tag_alignment.time.sleep'),contextlib.redirect_stdout(io.StringIO()):
  tracker.approach(6,.6)
  assert observed.call_count==15
 assert abs(progress[0]-.6)<1e-8
-print('PASS: simultaneous 6/0/2 select independently; final 15 cm needs no images.')
+assert m.TRAVEL_DISTANCE_M == .6
+from tag_alignment import FINAL_APPROACH_M
+assert FINAL_APPROACH_M == .12
+print('PASS: simultaneous 6/0/2 select independently; final 12 cm needs no images.')
