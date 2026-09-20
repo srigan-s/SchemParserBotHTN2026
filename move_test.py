@@ -8,6 +8,7 @@ args = parser.parse_args()
 if not args.clear:
     parser.error('Place robot on floor with clear space, then pass --clear.')
 moves = {'forward': dict(x=0.20), 'sideways': dict(y=0.20), 'turn': dict(z=45)}
+raise SystemExit('Chassis tests disabled: unexpected drift is under investigation. Do not run motion until diagnosed.')
 ep = robot.Robot()
 try:
     if not ep.initialize(conn_type='rndis'):
