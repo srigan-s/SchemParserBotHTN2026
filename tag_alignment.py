@@ -10,7 +10,7 @@ CORRECTION_STEP_M = 0.03
 MANUAL_SHIFT_M = 0.05
 MAX_CORRECTIONS = 10
 FORWARD_STEP_M = 0.10
-FINAL_APPROACH_M = 0.14
+FINAL_APPROACH_M = 0.15
 
 
 class TagAligner:
@@ -60,7 +60,7 @@ class TagAligner:
 
     def approach(self, expected_id, distance):
         if distance <= FINAL_APPROACH_M:
-            raise ValueError("Approach must include a tracked segment before the final 14 cm")
+            raise ValueError("Approach must include a tracked segment before the final 15 cm")
         tracked_distance = distance - FINAL_APPROACH_M
         lateral = 0.0
         corrections = 0
@@ -106,7 +106,7 @@ class TagAligner:
             step = min(FORWARD_STEP_M, tracked_distance - travelled)
             self.drive(self.ep, distance=step)
             travelled += step
-        # Finish from the 46 cm point without requiring the tag near the claw.
-        print(f"Tag {expected_id} approach aligned; driving final 14 cm without vision...", flush=True)
+        # Finish from the 45 cm point without requiring the tag near the claw.
+        print(f"Tag {expected_id} approach aligned; driving final 15 cm without vision...", flush=True)
         self.drive(self.ep, distance=FINAL_APPROACH_M)
         return lateral
